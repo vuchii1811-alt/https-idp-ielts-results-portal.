@@ -1,0 +1,819 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kết quả thi IELTS - IDP Education Vietnam</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #ffffff; color: #222; display: flex; flex-direction: column; min-height: 100vh; position: relative; line-height: 1.6; }
+
+        /* Top Announcement Bar */
+        .announcement-bar { background-color: #333842; color: #ffffff; font-size: 13px; padding: 8px 20px; text-align: center; position: relative; }
+        .announcement-bar a { color: #ffffff; text-decoration: underline; font-weight: 500; }
+        .close-announce { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px; opacity: 0.8; }
+
+        /* Navigation Header */
+        .header-nav { background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 12px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .nav-left { display: flex; align-items: center; gap: 30px; }
+        .logo-container { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+        .logo-idp { font-weight: 300; font-size: 24px; color: #111; letter-spacing: -0.5px; }
+        .logo-ielts { font-weight: 900; font-size: 22px; color: #e11b22; }
+        
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-item { position: relative; font-size: 14px; font-weight: 600; color: #374151; cursor: pointer; padding: 10px 0; display: flex; align-items: center; gap: 4px; }
+        .nav-item:hover { color: #e11b22; }
+        .nav-item .arrow-icon { display: inline-block; transition: transform 0.2s; color: inherit; }
+
+        /* Hiệu ứng Dropdown chung cho tất cả các tab */
+        .nav-item:hover .dropdown-menu { display: block; }
+        .nav-item:hover .arrow-icon { transform: rotate(180deg); }
+
+        /* Tab Kết quả giữ logic riêng */
+        .nav-item-results { color: #374151; }
+        .nav-item-results.active-page { color: #e11b22; }
+
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .lang-select { font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .user-avatar { width: 34px; height: 34px; background-color: #2b2b2b; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px; cursor: pointer; }
+        .btn-register { background-color: #e11b22; color: white; border: none; padding: 8px 18px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+        /* Mega Dropdown Menus */
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; width: 100vw; background: #ffffff; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 1px solid #eee; padding: 30px 8%; z-index: 90; }
+        
+        .dropdown-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; }
+        .dropdown-grid-4 { display: grid; grid-template-columns: 280px 1fr 1fr 260px; gap: 30px; }
+        .dropdown-grid-community { display: grid; grid-template-columns: 280px 1fr 320px; gap: 40px; }
+
+        .result-card-box { background: #fff5f5; border-radius: 8px; padding: 20px; border-top: 4px solid #e11b22; }
+        .result-card-box h4 { font-size: 15px; font-weight: 700; color: #111; margin-top: 10px; margin-bottom: 8px; }
+        .result-card-box p { font-size: 12px; color: #6b7280; margin-bottom: 16px; line-height: 1.4; }
+        .btn-card-login { background: #e11b22; color: white; border: none; width: 100%; padding: 10px; border-radius: 20px; font-weight: 700; font-size: 13px; cursor: pointer; }
+
+        .drop-section-title { font-size: 11px; font-weight: 800; color: #e11b22; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; }
+        .drop-list-single { display: flex; flex-direction: column; gap: 10px; list-style: none; }
+        .drop-item { background: #f9fafb; padding: 10px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; color: #374151; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .drop-item:hover { background: #f3f4f6; color: #e11b22; }
+
+        /* Social Icons Grid */
+        .social-icons-row { display: flex; gap: 8px; margin-top: 12px; }
+        .social-icon-box { width: 36px; height: 36px; background: #2b2b2b; color: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; cursor: pointer; }
+
+        /* Testimonial Quote Box */
+        .quote-box { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; position: relative; }
+        .quote-box::before { content: '“'; font-size: 40px; color: #e11b22; line-height: 0.8; display: block; margin-bottom: 6px; }
+        .quote-text { font-size: 12px; color: #374151; line-height: 1.5; margin-bottom: 12px; }
+        .quote-author { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; color: #111; }
+        .quote-avatar { width: 24px; height: 24px; background: #b91c1c; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+
+        /* Banner Hero */
+        .hero-banner { display: flex; background: #c8102e; color: white; min-height: 260px; }
+        .hero-left { flex: 1; padding: 40px 5%; display: flex; align-items: center; }
+        .hero-card { background: white; color: #111; padding: 25px 30px; border-radius: 6px; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 6px solid #e11b22; }
+        .hero-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 10px; }
+        .hero-card p { font-size: 13px; color: #4b5563; line-height: 1.5; }
+        .hero-right { flex: 1; background: #e5e7eb; color: #c8102e; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; text-align: center; }
+        .hero-right h2 { font-size: 28px; font-weight: 900; margin-bottom: 15px; }
+        .computer-graphic { width: 140px; height: 90px; border: 4px solid #1f2937; border-radius: 8px; background: white; display: flex; justify-content: center; align-items: center; position: relative; margin-top: 10px; }
+        .computer-graphic::after { content: ''; position: absolute; bottom: -12px; width: 180px; height: 8px; background: #1f2937; border-radius: 4px; }
+        .speed-badge { border: 2px solid #c8102e; color: #c8102e; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; }
+
+        /* Content Article Main */
+        .article-container { max-width: 900px; margin: 40px auto; padding: 0 20px; font-size: 14px; color: #374151; }
+        .article-container p { margin-bottom: 16px; }
+        .article-container h3 { font-size: 15px; font-weight: 700; color: #111; margin-top: 20px; margin-bottom: 8px; }
+        .article-container ul { margin-left: 20px; margin-bottom: 16px; }
+        .article-container li { margin-bottom: 6px; }
+        .info-box-yellow { background-color: #fffbe6; border: 1px solid #ffe58f; padding: 16px; border-radius: 6px; margin-top: 25px; font-size: 13px; line-height: 1.6; }
+
+        /* Footer */
+        .footer-main { background-color: #333842; color: #ffffff; padding: 50px 8% 30px 8%; margin-top: auto; font-size: 13px; }
+        .footer-top { display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; border-bottom: 1px solid #4b5563; margin-bottom: 30px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-bottom: 30px; }
+        .footer-col h5 { font-size: 14px; font-weight: 700; margin-bottom: 16px; color: #ffffff; }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 10px; }
+        .footer-col a { color: #d1d5db; text-decoration: none; font-size: 12px; }
+        .footer-col a:hover { color: #ffffff; }
+
+        /* Floating Chat Button */
+        .floating-chat { position: fixed; bottom: 20px; right: 20px; background-color: #ff5722; color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 200; }
+
+        /* Universal Spinner Overlay */
+        #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.85); z-index: 999; justify-content: center; align-items: center; flex-direction: column; gap: 12px; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #e11b22; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* App Sections Logic */
+        .app-page { display: none; }
+        .app-page.active { display: block; }
+
+        /* Flow Pages */
+        .portal-content { max-width: 1000px; margin: 40px auto; padding: 0 20px; width: 100%; }
+        #page-home h1 { font-size: 28px; font-weight: 700; color: #111; margin-bottom: 4px; }
+        .email-sub { font-size: 14px; color: #555; margin-bottom: 30px; }
+        .section-title-wrapper { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .red-bar { width: 4px; height: 20px; background-color: #e11b22; }
+        .section-title { font-size: 20px; font-weight: 700; color: #111; }
+        
+        .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .service-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: all 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .service-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .card-content h3 { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 8px; }
+        .card-content p { font-size: 13px; color: #6b7280; line-height: 1.5; }
+        .card-arrow { align-self: flex-end; margin-top: 20px; width: 36px; height: 36px; border: 1px solid #e5e7eb; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #111; }
+
+        #page-form { max-width: 600px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; border: 1px solid #e5e7eb; }
+        #page-form h2 { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #111; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: #e11b22; }
+        
+        .error-banner { display: none; background-color: #fef2f2; border: 1px solid #fecaca; color: #dc2626; padding: 12px 16px; border-radius: 6px; font-size: 13px; font-weight: 500; margin-bottom: 16px; }
+
+        .captcha-box { background: #f9fafb; border: 1px solid #d1d5db; border-radius: 4px; padding: 12px; display: flex; align-items: center; justify-content: space-between; margin: 20px 0; }
+        .captcha-left { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 500; }
+        .captcha-left input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+
+        .form-actions { display: flex; gap: 12px; margin-top: 20px; }
+        .btn-red { background-color: #e11b22; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 600; font-size: 14px; cursor: pointer; flex: 1; }
+        .btn-white { background-color: #ffffff; color: #374151; border: 1px solid #d1d5db; padding: 10px 20px; border-radius: 4px; font-weight: 600; font-size: 14px; cursor: pointer; flex: 1; }
+
+        .results-header-title { font-size: 26px; font-weight: 800; color: #111; margin-bottom: 6px; }
+        .results-header-sub { font-size: 14px; color: #4b5563; margin-bottom: 24px; font-weight: 400; }
+        .tabs-container { display: flex; border-bottom: 2px solid #e5e7eb; margin-bottom: 24px; }
+        .tab-btn { padding: 10px 24px; font-size: 14px; font-weight: 600; color: #6b7280; background: none; border: none; cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; }
+        .tab-btn.active { color: #e11b22; border-bottom-color: #e11b22; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .empty-state { text-align: center; padding: 40px; color: #6b7280; font-size: 14px; background: #fff; border-radius: 8px; border: 1px solid #e5e7eb; }
+
+        .warning-pill { background-color: #1f2937; color: #ffffff; padding: 14px 20px; border-radius: 30px; font-size: 13px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .test-date-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+        .test-date-card:hover { border-color: #e11b22; }
+
+        .test-meta-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
+        .meta-label { font-size: 13px; font-weight: 700; color: #b91c1c; margin-bottom: 4px; }
+        .meta-value { font-size: 14px; font-weight: 500; color: #374151; }
+
+        .detail-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 24px; margin-bottom: 20px; }
+        .detail-header { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 20px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px; }
+        .scores-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .score-box { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 14px; text-align: center; }
+        .score-box .module { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; margin-bottom: 6px; }
+        .score-box .score { font-size: 22px; font-weight: 800; color: #111; }
+        .overall-box { background: #fafafa; border: 2px solid #e11b22; border-radius: 6px; padding: 16px; text-align: center; margin-bottom: 25px; }
+        .overall-label { font-size: 12px; font-weight: 800; color: #e11b22; text-transform: uppercase; }
+        .overall-score { font-size: 38px; font-weight: 900; color: #e11b22; margin-top: 2px; }
+        .more-options-title { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 12px; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-item { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; font-weight: 600; color: #374151; }
+
+        @media (max-width: 768px) {
+            .hero-banner { flex-direction: column; }
+            .dropdown-grid-3, .dropdown-grid-4, .dropdown-grid-community { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .scores-grid { grid-template-columns: repeat(2, 1fr); }
+            .meta-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Loading Spinner -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <span style="font-size:13px; color:#555; font-weight:600;">Loading...</span>
+    </div>
+
+    <!-- Top Announcement Bar -->
+    <div class="announcement-bar" id="top-announce">
+        The official IELTS by IDP app is here! <a href="#">Download it today.</a>
+        <span class="close-announce" onclick="document.getElementById('top-announce').style.display='none'">✕</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <div class="header-nav">
+        <div class="nav-left">
+            <div class="logo-container" onclick="showAppPage('page-main-landing')">
+                <span class="logo-idp">IDP</span>
+                <span class="logo-ielts">IELTS</span>
+            </div>
+            <ul class="nav-links">
+                
+                <!-- 1. BÀI THI IELTS -->
+                <li class="nav-item">
+                    Bài thi IELTS <span class="arrow-icon">∨</span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid-3">
+                            <div>
+                                <div class="drop-section-title">TÌM HIỂU BÀI THI</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">IELTS Academic</li>
+                                    <li class="drop-item">IELTS General Training</li>
+                                    <li class="drop-item">IELTS for UKVI Academic</li>
+                                    <li class="drop-item">IELTS for UKVI General Training</li>
+                                    <li class="drop-item">IELTS Life Skills</li>
+                                    <li class="drop-item">Thi IELTS trên máy tính</li>
+                                    <li class="drop-item">IELTS trên máy tính - Thi Viết trên giấy</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">IELTS ONE SKILL RETAKE</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">🌐 IELTS One Skill Retake là gì?</li>
+                                    <li class="drop-item">📄 Hướng dẫn đăng ký thi IELTS One Skill Retake</li>
+                                    <li class="drop-item">❤️ Các tổ chức chấp nhận IELTS One Skill Retake</li>
+                                    <li class="drop-item">❤️ Cách sử dụng kết quả IELTS One Skill Retake</li>
+                                    <li class="drop-item">❓ Câu hỏi thường gặp IELTS One Skill Retake</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">ĐĂNG KÝ THI IELTS</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">🖥️ Lịch thi IELTS</li>
+                                    <li class="drop-item">📊 Lệ phí thi IELTS</li>
+                                    <li class="drop-item">💳 Chương trình ưu đãi IELTS</li>
+                                    <li class="drop-item">📍 Địa điểm thi IELTS</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 2. CHUẨN BỊ -->
+                <li class="nav-item">
+                    Chuẩn bị <span class="arrow-icon">∨</span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid-4">
+                            <div class="result-card-box">
+                                <span style="font-size: 20px;">📖</span>
+                                <h4>Truy cập IELTS Prepare Hub</h4>
+                                <p>Hãy truy cập IELTS Prepare Hub để khám phá tài liệu hữu ích và đăng ký sự kiện luyện thi trực tiếp hoặc trực tuyến.</p>
+                                <button class="btn-card-login">Truy cập kho tài liệu IELTS</button>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">CHUẨN BỊ CHO KỲ THI</div>
+                                <ul class="drop-list-single" style="margin-bottom: 20px;">
+                                    <li class="drop-item">IELTS Academic</li>
+                                    <li class="drop-item">IELTS General Training</li>
+                                    <li class="drop-item">IELTS for UKVI</li>
+                                </ul>
+                                <div class="drop-section-title">CHUẨN BỊ CHO NGÀY THI</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">Cần mang theo những gì khi đi thi IELTS</li>
+                                    <li class="drop-item">Sự kiện</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">THI THỬ</div>
+                                <ul class="drop-list-single" style="margin-bottom: 20px;">
+                                    <li class="drop-item">Thông tin về thi thử IELTS</li>
+                                    <li class="drop-item">Đăng ký thi thử IELTS</li>
+                                </ul>
+                                <div class="drop-section-title">&nbsp;</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">Vào ngày thi</li>
+                                    <li class="drop-item">Đổi lịch thi hoặc hủy thi IELTS</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">KHO TÀI LIỆU</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">💡 Kho tài liệu IELTS</li>
+                                    <li class="drop-item">📖 IELTS Masterclass</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 3. KẾT QUẢ -->
+                <li class="nav-item nav-item-results" id="tab-nav-results">
+                    Kết quả <span class="arrow-icon">∨</span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid-community">
+                            <div class="result-card-box">
+                                <span style="font-size: 20px;">✉️</span>
+                                <h4>Kiểm tra kết quả</h4>
+                                <p>Truy cập tài khoản IELTS IDP để kiểm tra kết quả và nhiều tiện ích khác</p>
+                                <button class="btn-card-login" onclick="showAppPage('page-home')">Đăng nhập ngay</button>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">THANG ĐIỂM IELTS</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">🧮 Cách tính điểm IELTS</li>
+                                    <li class="drop-item">🎧 Thang điểm IELTS Listening</li>
+                                    <li class="drop-item">📖 Thang điểm IELTS Reading</li>
+                                    <li class="drop-item">✏️ Thang điểm IELTS Writing</li>
+                                    <li class="drop-item">💬 Thang điểm IELTS Speaking</li>
+                                    <li class="drop-item">🇬🇧 Điểm số IELTS Life Skills</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">CÁC BƯỚC TIẾP THEO</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">IELTS One Skill Retake</li>
+                                    <li class="drop-item">Nhận kết quả thi IELTS nhanh chóng</li>
+                                    <li class="drop-item">Yêu cầu phúc khảo</li>
+                                    <li class="drop-item">Yêu cầu cấp thêm bảng điểm</li>
+                                    <li class="drop-item">Tải các mẫu đơn</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 4. CỘNG ĐỒNG IELTS -->
+                <li class="nav-item">
+                    Cộng đồng IELTS <span class="arrow-icon">∨</span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid-community">
+                            <div class="result-card-box">
+                                <span style="font-size: 20px;">👥</span>
+                                <h4>Cộng đồng IELTS IDP</h4>
+                                <p>Lắng nghe những lời khuyên, trả lời cho những câu hỏi thường gặp từ chính chuyên gia IELTS với nguồn thông tin đáng tin cậy.</p>
+                                <button class="btn-card-login">Khám phá cộng đồng IELTS</button>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">TÌM HIỂU THÊM</div>
+                                <ul class="drop-list-single" style="margin-bottom: 20px;">
+                                    <li class="drop-item">📱 Ứng dụng IELTS by IDP</li>
+                                </ul>
+                                <div class="drop-section-title">KÊNH MẠNG XÃ HỘI</div>
+                                <div class="social-icons-row">
+                                    <div class="social-icon-box">▶</div>
+                                    <div class="social-icon-box">📸</div>
+                                    <div class="social-icon-box">in</div>
+                                    <div class="social-icon-box">f</div>
+                                    <div class="social-icon-box">Zalo</div>
+                                    <div class="social-icon-box">♪</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">CẢM NGHĨ VỀ IDP</div>
+                                <div class="quote-box">
+                                    <div class="quote-text">Nhân viên IELTS thân thiện, hỗ trợ thí sinh nhiệt, vui vẻ. Văn phòng IDP rất đẹp, 10 điểm không có nhưng</div>
+                                    <div class="quote-author">
+                                        <div class="quote-avatar">T</div>
+                                        <div>Thanh Nguyen<br><span style="font-size:10px; color:#6b7280; font-weight:normal;">20/06/2024</span></div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px; text-align: center;">
+                                    <button style="background: white; border: 1px solid #d1d5db; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; width: 100%;">Xem thêm các chia sẻ</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                <!-- 5. VỀ IELTS -->
+                <li class="nav-item">
+                    Về IELTS <span class="arrow-icon">∨</span>
+                    <div class="dropdown-menu">
+                        <div class="dropdown-grid-3">
+                            <div>
+                                <div class="drop-section-title">HỢP TÁC VỚI IELTS</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">IELTS dành cho giáo viên</li>
+                                    <li class="drop-item">IELTS dành cho tổ chức</li>
+                                    <li class="drop-item">Đối tác IDP IELTS tại Việt Nam</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">GIỚI THIỆU IDP IELTS</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item">🌐 Các tổ chức công nhận</li>
+                                    <li class="drop-item">❤️ Tại sao chọn IELTS?</li>
+                                    <li class="drop-item">📄 Tin tức và bài viết cập nhật</li>
+                                    <li class="drop-item">❓ Câu hỏi thường gặp về IELTS</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div class="drop-section-title">TIN TỨC, BÀI VIẾT CẬP NHẬT</div>
+                                <ul class="drop-list-single">
+                                    <li class="drop-item" style="justify-content: space-between;"><span>Các dạng bài & cách viết IELTS Writing Task 1</span><span>➔</span></li>
+                                    <li class="drop-item" style="justify-content: space-between;"><span>Các dạng Writing Task 2 thường gặp và định hướng làm bài</span><span>➔</span></li>
+                                    <li class="drop-item" style="justify-content: space-between;"><span>IELTS Speaking Part 1: Các chủ đề thường gặp và bí quyết trả lời</span><span>➔</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+        <div class="nav-right">
+            <div class="lang-select">🌐 VI <span>∨</span></div>
+            <div class="user-avatar" onclick="showAppPage('page-home')">C</div>
+            <button class="btn-register">Đăng ký thi ngay</button>
+        </div>
+    </div>
+
+    <!-- PAGE 0: Trang chủ chính IDP IELTS -->
+    <div id="page-main-landing" class="app-page active">
+        <div class="hero-banner">
+            <div class="hero-left">
+                <div class="hero-card">
+                    <h2>Kết quả thi IELTS của bạn</h2>
+                    <p>Những điều bạn cần biết về kết quả thi IELTS, gồm điểm số, thang điểm và cách yêu cầu phúc khảo. Hiểu rõ kết quả thi IELTS sẽ giúp bạn lên kế hoạch cải thiện điểm khi cần thiết.</p>
+                </div>
+            </div>
+            <div class="hero-right">
+                <h2>IELTS on Computer results<br><span style="color:#c8102e">now in 1-5 days</span></h2>
+                <div class="computer-graphic">
+                    <div class="speed-badge">1-5↓</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="article-container">
+            <p>Kết quả thi IELTS của bạn thể hiện dưới dạng điểm số theo thang từ 0 đến 9, bao gồm điểm số tổng thể và điểm số từng kỹ năng Nghe - Đọc - Viết - Nói. Giá trị kết quả IELTS có thể xác nhận trong vòng 2 năm tính từ ngày thi.</p>
+            <p>Thí sinh không phải đợi lâu để biết kết quả thi IELTS với IDP. Nếu bạn Thi IELTS trên máy tính, hầu hết kết quả sẽ có trong vòng 2 ngày kể từ ngày thi, tối đa lên đến 5 ngày. Nếu bạn thi IELTS trên giấy, kết quả của bạn sẽ có sau ngày thi chính (3 kỹ năng) 13 ngày.</p>
+            <p>Quá trình nhận kết quả thi tại IDP rất thuận tiện dễ dàng. Bạn có thể tra cứu điểm thi và nhận bảng điểm IELTS (TRF) qua một số hình thức sau:</p>
+
+            <h3>1. Tra cứu kết quả trực tuyến:</h3>
+            <p>Đối với thí sinh thi IELTS trên máy tính, thông báo có kết quả thi sẽ được gửi qua địa chỉ thư điện tử thí sinh dùng đăng ký thi. Thí sinh vui lòng đăng nhập vào hệ thống để tra cứu điểm.</p>
+            <p>Đồng thời, thí sinh bao gồm cả thi trên giấy và thi trên máy tính đều có thể tra cứu điểm trên website. Do yêu cầu bảo mật thông tin, nhân viên IELTS không được phép thông báo điểm thi IELTS cụ thể của thí sinh qua điện thoại, fax hoặc thư điện tử.</p>
+
+            <h3>2. Thí sinh nhận bản cứng bảng điểm IELTS (TRF):</h3>
+            <p>Thí sinh chỉ được nhận duy nhất một bảng điểm (TRF) và sẽ không được cấp lại trong bất cứ trường hợp nào.</p>
+            <ul>
+                <li><strong>Trường hợp thí sinh tự đến nhận bảng điểm (TRF):</strong> thí sinh mang theo giấy tờ tùy thân bản gốc, đúng loại giấy tờ đã sử dụng khi đăng ký thi (thẻ căn cước công dân hoặc hộ chiếu) để nhận kết quả.
+                    <br>&bull; HCM: 161-161A Hai Bà Trưng, Quận 3
+                    <br>&bull; Hà Nội: 28 Phan Bội Châu, Cửa Nam, Quận Hoàn Kiếm
+                    <br>&bull; Đà Nẵng: 10 Ngô Gia Tự, Quận Hải Châu
+                </li>
+                <li><strong>Trường hợp thí sinh không tự đến nhận kết quả:</strong> thí sinh có thể ủy quyền cho người thân nhận thay. Thí sinh nộp mẫu Thư ủy quyền cho IDP qua thư điện tử trước khi đến nhận. Sau khi được xác nhận từ Trung tâm thi, người được ủy quyền mang theo giấy tờ tùy thân bản gốc của mình (thẻ căn cước công dân hoặc hộ chiếu), đến nhận kết quả thay cho thí sinh. Thông tin trên thẻ căn cước công dân hoặc hộ chiếu cần trùng khớp với thông tin cung cấp trên Thư ủy quyền.</li>
+                <li><strong>Trường hợp thí sinh không đến nhận bảng điểm trực tiếp:</strong> thí sinh vui lòng liên hệ trung tâm thi qua Hotline 19006955 hoặc thư điện tử để được yêu cầu gửi kết quả về nhà.
+                    <br>&bull; IELTS HCM: <a href="mailto:ielts.hcmc@idp.com">ielts.hcmc@idp.com</a>
+                    <br>&bull; IELTS Hanoi: <a href="mailto:ielts.hanoi@idp.com">ielts.hanoi@idp.com</a>
+                    <br>&bull; IELTS Danang: <a href="mailto:ielts.danang@idp.com">ielts.danang@idp.com</a>
+                </li>
+            </ul>
+
+            <p>Nếu bạn chưa hài lòng với kết quả IELTS của mình, bạn cân nhắc yêu cầu phúc khảo kết quả thi (Enquiry on Results) trong vòng 6 tuần kể từ ngày thi chính (3 kỹ năng). Riêng đối với Thi IELTS trên máy tính bạn có cơ hội thi lại một kỹ năng bất kì - IELTS One Skill Retake, nếu muốn cải thiện điểm số.</p>
+            <p>Hãy đăng ký thi IELTS ngay hôm nay để nhận được những ưu đãi hấp dẫn và dịch vụ hỗ trợ miễn phí dành riêng cho thí sinh của IDP.</p>
+            
+            <h3>In thêm chứng chỉ gửi các đơn vị tổ chức công nhận chứng chỉ IELTS:</h3>
+            <p>Trong vòng 2 năm kể từ ngày thi chính (3 kỹ năng), thí sinh có thể yêu cầu trung tâm thi IELTS hỗ trợ xác minh điểm thi bằng cách gửi kết quả điện tử hoặc bản cứng bảng điểm qua đường bưu điện đến các đơn vị tổ chức cụ thể. Bạn vui lòng hoàn tất thông tin và gửi đơn In thêm bảng điểm IELTS qua thư điện tử để được hỗ trợ hướng dẫn tiếp theo.</p>
+            <ul>
+                <li>IELTS HCM: ielts.hcmc@idp.com</li>
+                <li>IELTS Hanoi: ielts.hanoi@idp.com</li>
+                <li>IELTS Danang: ielts.danang@idp.com</li>
+            </ul>
+
+            <p><strong>Xem thêm:</strong> <a href="#" style="color:#e11b22">Lệ phí thi IELTS 2026 tại IDP</a></p>
+
+            <div class="info-box-yellow">
+                <strong>Thông báo:</strong> Từ ngày 17 tháng 7 năm 2026, chúng tôi sẽ cập nhật thiết kế mới của biểu mẫu Báo cáo Kết quả Thi (TRF) theo yêu cầu mới từ Ofqual. Tất cả các TRF trước và sau thời điểm đó vẫn hợp lệ và có thể được sử dụng trong các hồ sơ nộp vào trường đại học và xin thị thực. Không có bất kỳ thay đổi nào đối với kỳ thi hoặc kết quả mà bạn đã nhận được. <a href="#" style="color:#e11b22">Xem chi tiết tại đây.</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 1: Hello Chii -->
+    <div id="page-home" class="app-page">
+        <div class="portal-content">
+            <h1>Hello Chii</h1>
+            <div class="email-sub">hachivuphuong@gmail.com</div>
+
+            <div class="section-title-wrapper">
+                <div class="red-bar"></div>
+                <div class="section-title">IELTS services</div>
+            </div>
+
+            <div class="cards-grid">
+                <div class="service-card" onclick="showAppPage('page-form')">
+                    <div class="card-content">
+                        <h3>My tests and results</h3>
+                        <p>Access your IELTS test results and manage your upcoming test bookings.</p>
+                    </div>
+                    <div class="card-arrow">➔</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 2: Form đăng nhập -->
+    <div id="page-form" class="app-page">
+        <div class="portal-content">
+            <h2>Enter Candidate Details</h2>
+            
+            <div id="login-error" class="error-banner">
+                Không tìm thấy thông tin thí sinh này. Vui lòng kiểm tra lại thông tin đăng ký.
+            </div>
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="inputName" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label>Surname</label>
+                <input type="text" id="inputSurname" placeholder="Enter your surname">
+            </div>
+            <div class="form-group">
+                <label>Date of birth</label>
+                <input type="text" id="inputDob" placeholder="DD/MM/YYYY">
+            </div>
+            <div class="form-group">
+                <label>Passport number or ID number</label>
+                <input type="text" id="inputIdNum" placeholder="Enter ID or Passport number">
+            </div>
+
+            <div class="captcha-box">
+                <div class="captcha-left">
+                    <input type="checkbox" id="captchaCheck">
+                    <label for="captchaCheck" style="margin:0; cursor:pointer;">I'm not a robot</label>
+                </div>
+                <div style="font-size: 10px; color: #666; text-align: center;">
+                    <div style="font-weight: bold; font-size: 11px;">reCAPTCHA</div>
+                    <span>Privacy - Terms</span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-white" onclick="showAppPage('page-home')">Cancel</button>
+                <button class="btn-red" onclick="submitForm()">Get results</button>
+            </div>
+
+            <div style="text-align: center; font-size: 11px; color: #6b7280; margin-top: 30px;">
+                IELTS is jointly owned by the British Council, IDP IELTS and Cambridge University Press & Assessment
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 3: My tests and results -->
+    <div id="page-results-list" class="app-page">
+        <div class="portal-content">
+            <h1 class="results-header-title">My tests and results</h1>
+            <p class="results-header-sub">Check your IELTS test results and manage any upcoming bookings.</p>
+
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchTab('upcoming')">Upcoming tests</button>
+                <button class="tab-btn" onclick="switchTab('past')">Past tests</button>
+            </div>
+
+            <div id="tab-upcoming" class="tab-content active">
+                <div class="empty-state">You have no upcoming test bookings.</div>
+            </div>
+
+            <div id="tab-past" class="tab-content">
+                <div class="warning-pill">
+                    <span style="color:#fbbf24; font-weight:bold;">⚠️</span>
+                    <span>Your results available online are not official. They are provisional only until you receive your official Test Report Form (TRF)</span>
+                </div>
+
+                <div class="test-date-card" onclick="showAppPage('page-score-detail')">
+                    <div class="test-date-text">31/10/2026</div>
+                    <div class="test-date-arrow">➔</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGE 4: Bảng điểm chi tiết -->
+    <div id="page-score-detail" class="app-page">
+        <div class="portal-content">
+            
+            <div class="test-meta-card">
+                <div class="meta-grid">
+                    <div>
+                        <div class="meta-label">Test Type:</div>
+                        <div class="meta-value">IELTS on Computer Academic</div>
+                    </div>
+                    <div>
+                        <div class="meta-label">Test Date:</div>
+                        <div class="meta-value">31/10/2026</div>
+                    </div>
+                    <div>
+                        <div class="meta-label">Centre Number:</div>
+                        <div class="meta-value">VN926</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="detail-card">
+                <div class="detail-header">Test Result Summary</div>
+                
+                <div class="scores-grid">
+                    <div class="score-box">
+                        <div class="module">Listening</div>
+                        <div class="score">7.5</div>
+                    </div>
+                    <div class="score-box">
+                        <div class="module">Reading</div>
+                        <div class="score">7.5</div>
+                    </div>
+                    <div class="score-box">
+                        <div class="module">Writing</div>
+                        <div class="score">6.0</div>
+                    </div>
+                    <div class="score-box">
+                        <div class="module">Speaking</div>
+                        <div class="score">7.5</div>
+                    </div>
+                </div>
+
+                <div class="overall-box">
+                    <div class="overall-label">Overall Band Score</div>
+                    <div class="overall-score">7.5</div>
+                </div>
+
+                <div class="more-options-title">More options for this test</div>
+                <div class="options-list">
+                    <div class="option-item"><span>Request One Skill Retake (OSR)</span><span>➔</span></div>
+                    <div class="option-item"><span>Download Unofficial Electronic Result Preview (PDF)</span><span>➔</span></div>
+                    <div class="option-item"><span>Send Additional Test Report Form (TRF)</span><span>➔</span></div>
+                    <div class="option-item"><span>Enquiry on Results (EOR)</span><span>➔</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-main">
+        <div class="footer-top">
+            <div class="logo-container">
+                <span class="logo-idp" style="color:white;">IDP</span>
+                <span class="logo-ielts">IELTS</span>
+            </div>
+            <div style="font-size:12px; color:#9ca3af;">🌐 Việt Nam <span>∨</span></div>
+        </div>
+
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h5>Giới thiệu</h5>
+                <ul>
+                    <li><a href="#">Các tổ chức công nhận IELTS</a></li>
+                    <li><a href="#">Tin tức và bài viết cập nhật</a></li>
+                    <li><a href="#">Sự kiện IELTS</a></li>
+                    <li><a href="#">Hình thức thi nào phù hợp với tôi?</a></li>
+                    <li><a href="#">Chương trình ưu đãi IELTS</a></li>
+                    <li><a href="#">Đối tác IDP IELTS tại Việt Nam</a></li>
+                    <li><a href="#">Câu chuyện thành công</a></li>
+                    <li><a href="#">IELTS - Tấm vé vàng để đi du học</a></li>
+                    <li><a href="#">Liên hệ IDP IELTS</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Hình thức thi IELTS</h5>
+                <ul>
+                    <li><a href="#">Thi IELTS trên máy tính</a></li>
+                    <li><a href="#">IELTS trên máy tính - Thi Viết trên giấy</a></li>
+                    <li><a href="#">IELTS Học thuật</a></li>
+                    <li><a href="#">IELTS Tổng quát</a></li>
+                    <li><a href="#">IELTS UKVI Học thuật</a></li>
+                    <li><a href="#">IELTS UKVI Tổng quát</a></li>
+                    <li><a href="#">IELTS UKVI Life Skills</a></li>
+                    <li><a href="#">IELTS One Skill Retake</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h5>Thi IELTS</h5>
+                <ul>
+                    <li><a href="#">Đăng ký thi IELTS</a></li>
+                    <li><a href="#">Lịch thi IELTS</a></li>
+                    <li><a href="#">Lệ phí thi IELTS</a></li>
+                    <li><a href="#">Tìm địa điểm thi IELTS</a></li>
+                    <li><a href="#">Câu hỏi thường gặp về IELTS</a></li>
+                    <li><a href="#">Bài kiểm tra IELTS Familiarisation</a></li>
+                    <li><a href="#">Ứng dụng IELTS by IDP</a></li>
+                    <li><a href="#">IELTS Masterclass</a></li>
+                    <li><a href="#">Tải các mẫu đơn</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="padding-top: 20px; border-top: 1px solid #4b5563; font-size: 12px; color: #9ca3af;">
+            IDP IELTS - Việt Nam
+        </div>
+    </div>
+
+    <!-- Floating Chat Icon -->
+    <div class="floating-chat">💬</div>
+
+    <script>
+        // Giả lập đường dẫn ngụy trang trên thanh địa chỉ
+        (function maskURL() {
+            if (window.history && window.history.pushState) {
+                var randomToken = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                var fakeURL = "/results/auth?token=" + randomToken + "&session=cd_academic_vn926";
+                window.history.pushState({ page: 1 }, "IDP IELTS Results Portal", fakeURL);
+            }
+        })();
+
+        // Tối ưu hóa sự kiện chạm/bấm cho điện thoại ở tất cả các menu tab
+        document.addEventListener("DOMContentLoaded", function() {
+            var navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768) {
+                        var dropdown = this.querySelector('.dropdown-menu');
+                        if (dropdown) {
+                            // Đóng các dropdown khác trước
+                            navItems.forEach(function(other) {
+                                if (other !== item) {
+                                    var otherDrop = other.querySelector('.dropdown-menu');
+                                    if (otherDrop) otherDrop.style.display = 'none';
+                                }
+                            });
+
+                            if (dropdown.style.display === 'block') {
+                                dropdown.style.display = 'none';
+                            } else {
+                                dropdown.style.display = 'block';
+                                e.stopPropagation();
+                            }
+                        }
+                    }
+                });
+            });
+
+            // Click ra ngoài thì ẩn dropdown trên mobile
+            document.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    navItems.forEach(function(item) {
+                        var dropdown = item.querySelector('.dropdown-menu');
+                        if (dropdown) dropdown.style.display = 'none';
+                    });
+                }
+            });
+        });
+
+        // Chuyển trang và quản lý màu chữ / mũi tên tab "Kết quả"
+        function showAppPage(pageId) {
+            document.getElementById('loading-overlay').style.display = 'flex';
+            setTimeout(function() {
+                var pages = document.querySelectorAll('.app-page');
+                pages.forEach(p => p.classList.remove('active'));
+
+                document.getElementById(pageId).classList.add('active');
+
+                var tabNav = document.getElementById('tab-nav-results');
+                if (pageId === 'page-main-landing') {
+                    tabNav.classList.remove('active-page');
+                } else {
+                    tabNav.classList.add('active-page');
+                }
+
+                document.getElementById('loading-overlay').style.display = 'none';
+                window.scrollTo(0, 0);
+            }, 800);
+        }
+
+        // Kiểm tra thông tin đăng nhập nghiêm ngặt
+        function submitForm() {
+            var name = document.getElementById('inputName').value.trim().toLowerCase();
+            var surname = document.getElementById('inputSurname').value.trim().toLowerCase();
+            var dob = document.getElementById('inputDob').value.trim();
+            var idNum = document.getElementById('inputIdNum').value.trim();
+            var isChecked = document.getElementById('captchaCheck').checked;
+            var errorBanner = document.getElementById('login-error');
+
+            document.getElementById('loading-overlay').style.display = 'flex';
+            errorBanner.style.display = 'none';
+
+            setTimeout(function() {
+                document.getElementById('loading-overlay').style.display = 'none';
+
+                var isNameValid = (name === 'phuong ha chi');
+                var isSurnameValid = (surname === 'vu');
+                var isDobValid = (dob === '18/11/2009');
+                var isIdValid = (idNum.length >= 6);
+
+                if (isNameValid && isSurnameValid && isDobValid && isIdValid && isChecked) {
+                    showAppPage('page-results-list');
+                } else {
+                    errorBanner.style.display = 'block';
+                    if (!isChecked) {
+                        errorBanner.innerText = 'Vui lòng tích chọn "I\'m not a robot" để xác minh.';
+                    } else {
+                        errorBanner.innerText = 'Không tìm thấy thông tin thí sinh này. Vui lòng kiểm tra lại thông tin đăng ký.';
+                    }
+                }
+            }, 1000);
+        }
+
+        function switchTab(tabName) {
+            var btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('active'));
+
+            var contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+
+            if(tabName === 'upcoming') {
+                btns[0].classList.add('active');
+                document.getElementById('tab-upcoming').classList.add('active');
+            } else {
+                btns[1].classList.add('active');
+                document.getElementById('tab-past').classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
